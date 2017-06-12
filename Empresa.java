@@ -10,6 +10,7 @@ public class Empresa {
 	private List<Vendedor> listaVendedores = new ArrayList<Vendedor>();
 	private List<Cliente> listaClientes = new ArrayList<Cliente>();
 	private Produto produto;
+	private Agenda agenda;
 	
 
 }

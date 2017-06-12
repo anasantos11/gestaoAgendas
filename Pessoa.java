@@ -6,4 +6,6 @@ public abstract class Pessoa {
 	private LocalDate nascimento;
 	private Endereco endereco;
 	private String cpf;
+	
+	
 }
