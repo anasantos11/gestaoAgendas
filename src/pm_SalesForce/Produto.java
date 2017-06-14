@@ -7,7 +7,11 @@ public class Produto {
 	Produto(String desc, Categoria catg){
 		setDescricao(desc);
 		setCategoria(catg);		
-	}	
+	}
+	Produto(Categoria catg){		
+		setCategoria(catg);
+		setDescricao("");
+	}
 	
 	public String getDescricao() {
 		return descricao;
