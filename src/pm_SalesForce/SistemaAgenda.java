@@ -10,12 +10,17 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import java.awt.Font;
+
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.awt.event.ActionEvent;
 import net.miginfocom.swing.MigLayout;
 import java.awt.Label;
@@ -54,6 +59,9 @@ public class SistemaAgenda extends JFrame {
 	private JTextField cepVendedor;
 	private JTextField cnpjEmpresa;
 	private JTextField cnpjEmpVendedor;
+	private JTextField cnpjEmpFicha;
+	private JTextField cpfVendedorFicha;
+	private JTextField horarioFicha;
 	private JPanel cadastroEmpresa;
 	private JLabel tituloCadastroEmpresa;
 	private JLabel labelEstadoEmp;
@@ -67,8 +75,11 @@ public class SistemaAgenda extends JFrame {
 	private JButton btnCadastrarEmp;
 	private JButton btnCadastrarCliente;
 	private JButton btnCadastrarVendedor;
+	private JButton btnCadastrarAtendimento;
 	private JLabel labelNascimentoCliente;
 	private JTextField nascimentoVendedor;
+	private JTextField cnpjClienteFicha;
+	private Label labelCliente;
 
 	/**
 	 * Launch the application.
@@ -92,7 +103,7 @@ public class SistemaAgenda extends JFrame {
 	public SistemaAgenda() {
 		Singleton log = Singleton.getInstance();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 444, 506);
+		setBounds(100, 100, 562, 506);
 		tela = new JPanel();
 		tela.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(tela);
@@ -210,9 +221,6 @@ public class SistemaAgenda extends JFrame {
 		btnCadastrarEmp.setFont(new Font("Tahoma", Font.BOLD, 15));
 		cadastroEmpresa.add(btnCadastrarEmp, "cell 1 14,growx,aligny top");
 
-		/**
-		 * Aba cadastro Cliente
-		 */
 		JPanel cadastroCliente = new JPanel();
 		aba.addTab("Cadastro Cliente", null, cadastroCliente, null);
 		cadastroCliente.setLayout(new MigLayout("", "[90px][198px,grow]",
@@ -290,9 +298,6 @@ public class SistemaAgenda extends JFrame {
 		cadastroCliente.add(estadoCliente, "cell 1 12,growx,aligny center");
 		estadoCliente.setColumns(10);
 
-		/**
-		 * Cadastro do cliente de uma empresa
-		 */
 		btnCadastrarCliente = new JButton("Cadastrar");
 		btnCadastrarCliente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -391,7 +396,6 @@ public class SistemaAgenda extends JFrame {
 								Integer.parseInt(numeroVendedor.getText()), bairroVendedor.getText(),
 								cidadeVendedor.getText(), estadoVendedor.getText(), cepVendedor.getText());
 
-						//JOptionPane.showMessageDialog(null, "dATA: " + nascimentoVendedor.getText());
 						String[] data = nascimentoVendedor.getText().split("/");
 						int dia = Integer.parseInt(data[0]);
 						int mes = Integer.parseInt(data[1]);
@@ -404,6 +408,7 @@ public class SistemaAgenda extends JFrame {
 						cnpjEmpVendedor.setText(null);
 						nomeVendedor.setText(null);
 						cpfVendedor.setText(null);
+						nascimentoVendedor.setText(null);
 						ruaVendedor.setText(null);
 						numeroVendedor.setText(null);
 						bairroVendedor.setText(null);
@@ -470,13 +475,113 @@ public class SistemaAgenda extends JFrame {
 		btnCadastrarVendedor.setForeground(new Color(0, 0, 128));
 		btnCadastrarVendedor.setFont(new Font("Tahoma", Font.BOLD, 15));
 		cadastroVendedor.add(btnCadastrarVendedor, "cell 1 15,growx,aligny top");
-		/**
-		 * Aba Cadastro Vendedor
-		 */
 
-		/**
-		 * Cadastro do cliente de uma empresa
-		 */
+		// Ana
+
+		JPanel atendimento = new JPanel();
+		aba.addTab("Ficha Atendimento", null, atendimento, null);
+		atendimento.setLayout(new MigLayout("", "[90px][198px,grow]",
+				"[19px][20px][20px][20px][20px][20px][20px][20px][20px][27px][][][][][][]"));
+
+		JLabel tituloAtendimento = new JLabel("FICHA DE ATENDIMENTO");
+		tituloAtendimento.setFont(new Font("Tahoma", Font.BOLD, 15));
+		atendimento.add(tituloAtendimento, "cell 0 0 2 1,alignx center");
+
+		Label labelEmp = new Label("CNPJ da empresa:");
+		labelEmp.setFont(new Font("Tahoma", Font.BOLD, 13));
+		atendimento.add(labelEmp, "cell 0 2");
+
+		cnpjEmpFicha = new JTextField();
+		atendimento.add(cnpjEmpFicha, "cell 1 2,growx");
+		cnpjEmpFicha.setColumns(10);
+
+		Label labelVendedor = new Label("CPF do vendedor:");
+		labelVendedor.setFont(new Font("Tahoma", Font.BOLD, 13));
+		atendimento.add(labelVendedor, "cell 0 3");
+
+		cpfVendedorFicha = new JTextField();
+		atendimento.add(cpfVendedorFicha, "cell 1 3,growx");
+		cpfVendedorFicha.setColumns(10);
+		cpfVendedor.setColumns(10);
+
+		JComboBox<Categoria> produtoFicha = new JComboBox<Categoria>();
+		produtoFicha.setModel(new DefaultComboBoxModel<>(Categoria.values()));
+		atendimento.add(produtoFicha, "cell 1 9,growx,aligny center");
+
+		btnCadastrarAtendimento = new JButton("Cadastrar");
+		btnCadastrarAtendimento.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				Empresa empresaFicha = log.getEmpresa(cnpjEmpFicha.getText());
+
+				if (!(empresaFicha == null)) {
+					Vendedor vendedorFicha = empresaFicha.getVendedor(cpfVendedorFicha.getText());
+					if (vendedorFicha == null) {
+						JOptionPane.showMessageDialog(null,
+								"Esse vendedor não está cadastrado na empresa " + empresaFicha.getNome() + " - "
+										+ empresaFicha.getCnpj() + "! \n"
+										+ "Vá até a aba 'Cadastro de Vendedor' para cadastrá-lo.",
+								"Vendedor sem cadastro", JOptionPane.WARNING_MESSAGE);
+					} else {
+						Cliente clienteFicha = empresaFicha.getCliente(cnpjClienteFicha.getText());
+						if (clienteFicha == null) {
+							JOptionPane.showMessageDialog(null,
+									"Esse cliente não está cadastrado na empresa " + empresaFicha.getNome() + " - "
+											+ empresaFicha.getCnpj() + "! \n"
+											+ "Vá até a aba 'Cadastro Cliente' para cadastrá-lo.",
+									"Cliente sem cadastro", JOptionPane.WARNING_MESSAGE);
+						} else {
+							String[] horario = horarioFicha.getText().split(":");
+							int hora = Integer.parseInt(horario[0]);
+							int minuto = Integer.parseInt(horario[1]);
+							Produto produto = new Produto("", (Categoria) produtoFicha.getSelectedItem());
+							Atendimento atendimento = new Atendimento(LocalTime.of(hora, minuto), vendedorFicha,
+									clienteFicha, produto);
+							JOptionPane.showMessageDialog(null,
+									"Atendimento cadastrado com sucesso !!!\nEmpresa Responsável: "
+											+ empresaFicha.getNome() + " - " + empresaFicha.getCnpj() + atendimento.printAtendimento());
+
+							cnpjEmpFicha.setText(null);
+							cpfVendedorFicha.setText(null);
+							cnpjClienteFicha.setText(null);
+							horarioFicha.setText(null);
+						}
+					}
+
+				} else {
+					JOptionPane.showMessageDialog(null,
+							"Sua empresa não está cadastrada no nosso sistema! \nVá até a aba 'Cadastro de Empresa' para usufruir das funcionalidades \noferecidas pelo nosso sistema.",
+							"Sem acesso ao sistema", JOptionPane.WARNING_MESSAGE);
+				}
+
+			}
+		});
+
+		labelCliente = new Label("CNPJ do cliente");
+		labelCliente.setFont(new Font("Tahoma", Font.BOLD, 13));
+		atendimento.add(labelCliente, "cell 0 4");
+
+		cnpjClienteFicha = new JTextField();
+		atendimento.add(cnpjClienteFicha, "cell 1 4,growx");
+		cnpjClienteFicha.setColumns(10);
+
+		JLabel tituloFichaAtendimento = new JLabel("DADOS PARA AGENDAR ATENDIMENTO");
+		tituloFichaAtendimento.setFont(new Font("Tahoma", Font.BOLD, 15));
+		atendimento.add(tituloFichaAtendimento, "cell 0 6 2 1,alignx center,aligny top");
+
+		JLabel labelHorarioAtendimento = new JLabel("Horário Atendimento:");
+		atendimento.add(labelHorarioAtendimento, "cell 0 8,alignx left,aligny center");
+
+		horarioFicha = new JTextField();
+		atendimento.add(horarioFicha, "cell 1 8,growx,aligny center");
+		horarioFicha.setColumns(20);
+
+		JLabel labelProduto = new JLabel("Seguro:");
+		atendimento.add(labelProduto, "cell 0 9,alignx left,aligny center");
+
+		btnCadastrarAtendimento.setForeground(new Color(0, 0, 128));
+		btnCadastrarAtendimento.setFont(new Font("Tahoma", Font.BOLD, 15));
+		atendimento.add(btnCadastrarAtendimento, "cell 1 15,growx,aligny top");
 
 	}
 

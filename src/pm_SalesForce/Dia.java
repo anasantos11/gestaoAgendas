@@ -39,7 +39,7 @@ public class Dia {
 			}
 		}
 		if (!atdExiste){
-			Atendimento atd = new Atendimento (h, m, v, c, p);
+			Atendimento atd = new Atendimento (LocalTime.of(h, m), v, c, p);
 			listaAtendimentos.add(atd);
 			status = true;
 		}
