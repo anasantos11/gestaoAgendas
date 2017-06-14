@@ -30,7 +30,7 @@ public class Dia {
 		this.listaAtendimentos = listaAtendimentos;
 	}
 	
-	public boolean criarAtendimento(int h, int m, Vendedor v, Cliente c){
+	public boolean criarAtendimento(int h, int m, Vendedor v, Cliente c, Produto p){
 		boolean atdExiste = false;
 		boolean status = false;
 		for(Atendimento i : getListaAtendimentos()){
@@ -39,7 +39,7 @@ public class Dia {
 			}
 		}
 		if (!atdExiste){
-			Atendimento atd = new Atendimento (h, m, v, c);
+			Atendimento atd = new Atendimento (h, m, v, c, p);
 			listaAtendimentos.add(atd);
 			status = true;
 		}
