@@ -1,25 +1,14 @@
 package pm_SalesForce;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.GridLayout;
-import java.awt.GridBagLayout;
 import javax.swing.JTabbedPane;
-import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
 import javax.swing.JTextField;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-import com.jgoodies.forms.layout.FormSpecs;
 import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.Color;
@@ -30,6 +19,10 @@ import java.awt.Label;
 
 public class SistemaAgenda extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel tela;
 	private JTextField nomeCliente;
 	private JTextField nomeEmp;
@@ -81,7 +74,7 @@ public class SistemaAgenda extends JFrame {
 	 * Create the frame.
 	 */
 	public SistemaAgenda() {
-		Aplicacao aplicacao = Aplicacao.getInstance();
+		Singleton log = Singleton.getInstance();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 348, 506);
 		tela = new JPanel();
@@ -177,7 +170,7 @@ public class SistemaAgenda extends JFrame {
 				 * Cadastrar Empresa no sistema
 				 */
 				try {
-					Empresa empProcurar = aplicacao.getEmpresa(cnpjEmp.getText());
+					Empresa empProcurar = log.getEmpresa(cnpjEmp.getText());
 					if (!(empProcurar == null)) {
 						JOptionPane.showMessageDialog(null, "Sua empresa já está cadastrada no nosso sistema!",
 								"Empresa já cadastrada no sistema", JOptionPane.WARNING_MESSAGE);
@@ -185,12 +178,12 @@ public class SistemaAgenda extends JFrame {
 						Endereco enderecoEmp = new Endereco(ruaEmp.getText(), Integer.parseInt(numeroEmp.getText()),
 								bairroEmp.getText(), cidadeEmp.getText(), estadoEmp.getText(), cepEmp.getText());
 						Empresa emp = new Empresa(nomeEmp.getText(), cnpjEmp.getText(), enderecoEmp);
-						aplicacao.addEmpresa(emp);
+						log.addEmpresa(emp);
 
 						JOptionPane.showMessageDialog(null,
 								"Empresa cadastrada com sucesso !!! \nAgora é só cadastrar os seus clientes para utilizar"
 										+ "\no sistema de gestão de agendas\n"
-										+ aplicacao.getEmpresa(cnpjEmp.getText()).toString());
+										+ log.getEmpresa(cnpjEmp.getText()).toString());
 
 						nomeEmp.setText(null);
 						cnpjEmp.setText(null);
@@ -294,29 +287,38 @@ public class SistemaAgenda extends JFrame {
 				/**
 				 * Pegar empresa cadastrada no sistema
 				 */
-				Empresa empresa = aplicacao.getEmpresa(cnpjEmpresa.getText());
-				if (empresa == null) {
-					JOptionPane.showMessageDialog(null,
-							"Sua empresa não está cadastrada no sistema! \nVá até a aba 'Cadastro de Empresa' para usufruir das funcionalidades \noferecidas pelo nosso sistema.",
-							"Sem acesso ao sistema", JOptionPane.WARNING_MESSAGE);
-				} else {
-					Endereco enderecoCliente = new Endereco(ruaCliente.getText(),
-							Integer.parseInt(numeroCliente.getText()), bairroCliente.getText(), cidadeCliente.getText(),
-							estadoCliente.getText(), cepCliente.getText());
-					Cliente clienteEmpresa = new Cliente(nomeCliente.getText(), cnpjCliente.getText(), enderecoCliente);
-					empresa.cadastrarCliente(clienteEmpresa);
-					JOptionPane.showMessageDialog(null, "Cliente cadastrado com sucesso !!! \n\n"
-							+ empresa.getCliente(cnpjCliente.getText()).toString());
-					cnpjEmpresa.setText(null);
-					nomeCliente.setText(null);
-					cnpjCliente.setText(null);
-					ruaCliente.setText(null);
-					numeroCliente.setText(null);
-					bairroCliente.setText(null);
-					cepCliente.setText(null);
-					cidadeCliente.setText(null);
-					estadoCliente.setText(null);
+				try {
+					@SuppressWarnings("unused")
+					int teste = Integer.parseInt(numeroCliente.getText());
+					Empresa empresa = log.getEmpresa(cnpjEmpresa.getText());
+					if (empresa == null) {
+						JOptionPane.showMessageDialog(null,
+								"Sua empresa não está cadastrada no sistema! \nVá até a aba 'Cadastro de Empresa' para usufruir das funcionalidades \noferecidas pelo nosso sistema.",
+								"Sem acesso ao sistema", JOptionPane.WARNING_MESSAGE);
+					} else {
+						Endereco enderecoCliente = new Endereco(ruaCliente.getText(),
+								Integer.parseInt(numeroCliente.getText()), bairroCliente.getText(),
+								cidadeCliente.getText(), estadoCliente.getText(), cepCliente.getText());
+						Cliente clienteEmpresa = new Cliente(nomeCliente.getText(), cnpjCliente.getText(),
+								enderecoCliente);
+						empresa.cadastrarCliente(clienteEmpresa);
+						JOptionPane.showMessageDialog(null, "Cliente cadastrado com sucesso !!! \n\n"
+								+ empresa.getCliente(cnpjCliente.getText()).toString());
+						cnpjEmpresa.setText(null);
+						nomeCliente.setText(null);
+						cnpjCliente.setText(null);
+						ruaCliente.setText(null);
+						numeroCliente.setText(null);
+						bairroCliente.setText(null);
+						cepCliente.setText(null);
+						cidadeCliente.setText(null);
+						estadoCliente.setText(null);
 
+					}
+
+				} catch (NumberFormatException e2) {
+					JOptionPane.showMessageDialog(null, "Dados preenchidos com formato incorreto, tente novamente.",
+							"Erro preenchimento formulário", JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});

@@ -4,23 +4,23 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class Aplicacao {
-	private static final Aplicacao INSTANCE = new Aplicacao();
+public class Singleton {
+	private static final Singleton INSTANCE = new Singleton();
 	private static List<Empresa> grupoEmpresas;
 
-	private Aplicacao() {
+	private Singleton() {
 		grupoEmpresas = new ArrayList<Empresa>();
 	}
 
-	public static Aplicacao getInstance() {
+	public static Singleton getInstance() {
 		return INSTANCE;
 	}
 
-	public static void addEmpresa(Empresa empresa) {
+	public void addEmpresa(Empresa empresa) {
 		grupoEmpresas.add(empresa);
 	}
 
-	public static Empresa getEmpresa(String cnpj) {
+	public Empresa getEmpresa(String cnpj) {
 		Iterator<Empresa> iter = grupoEmpresas.iterator();
 		while (iter.hasNext()) {
 			Empresa atual = iter.next();
