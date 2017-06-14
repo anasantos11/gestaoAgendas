@@ -5,10 +5,12 @@
  */
 package pm_SalesForce;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class Atendimento {
 	private LocalTime horario;
+	private LocalDate data;
 	private Vendedor vendedor;
 	private Cliente cliente;
 	private Produto produto;
@@ -22,7 +24,7 @@ public class Atendimento {
 	 * @param p
 	 */
 
-	Atendimento(LocalTime horario, Vendedor v, Cliente c, Produto p) {
+	Atendimento(LocalTime horario,LocalDate data, Vendedor v, Cliente c, Produto p) {
 		setHorario(horario);
 		setVendedor(v);
 		setCliente(c);
@@ -46,6 +48,22 @@ public class Atendimento {
 	 */
 	public void setHorario(LocalTime horario) {
 		this.horario = horario;
+	}
+	
+	/**
+	 * Pegar data do atendimento
+	 * @return data
+	 */
+
+	public LocalDate getData() {
+		return data;
+	}
+	/**
+	 * Enviar data atendimento
+	 * @param data
+	 */
+	public void setData(LocalDate data) {
+		this.data = data;
 	}
 
 	/**
