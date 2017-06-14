@@ -16,7 +16,6 @@ public class Empresa {
 		setNome(nome);
 		setCnpj(cnpj);
 		setEndereco(endereco);
-
 	}
 
 	public String getNome() {
