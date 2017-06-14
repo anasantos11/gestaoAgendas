@@ -32,14 +32,34 @@ public class SistemaAgenda extends JFrame {
 
 	private JPanel tela;
 	private JTextField nomeCliente;
+	private JTextField nomeEmp;
 	private JTextField cnpjCliente;
+	private JTextField cnpjEmp;
 	private JTextField ruaCliente;
+	private JTextField ruaEmp;
 	private JTextField numeroCliente;
+	private JTextField numeroEmp;
 	private JTextField estadoCliente;
+	private JTextField estadoEmp;
 	private JTextField cidadeCliente;
+	private JTextField cidadeEmp;
 	private JTextField bairroCliente;
+	private JTextField bairroEmp;
 	private JTextField cepCliente;
+	private JTextField cepEmp;
 	private JTextField cnpjEmpresa;
+	private JPanel cadastroEmpresa;
+	private JLabel tituloCadastroEmpresa;
+	private JLabel labelEstadoEmp;
+	private JLabel labelCidadeEmp;
+	private JLabel labelCepEmp;
+	private JLabel labelBairroEmp;
+	private JLabel labelNumeroEmp;
+	private JLabel labelRuaEmp;
+	private JLabel labelCnpjEmp;
+	private JLabel labelNomeEmp;
+	private JButton btnCadastrarEmp;
+	private JButton btnCadastrarCliente;
 
 	/**
 	 * Launch the application.
@@ -71,6 +91,125 @@ public class SistemaAgenda extends JFrame {
 
 		JTabbedPane aba = new JTabbedPane(JTabbedPane.TOP);
 		tela.add(aba);
+
+		/**
+		 * Cadastro do cliente
+		 */
+
+		/**
+		 * teste
+		 * 
+		 */
+
+		cadastroEmpresa = new JPanel();
+		aba.addTab("Cadastro de Empresa", null, cadastroEmpresa, null);
+		cadastroEmpresa.setLayout(new MigLayout("", "[90px][198px,grow]",
+				"[19px][20px][20px][20px][20px][20px][20px][20px][20px][27px][][][][][][]"));
+
+		tituloCadastroEmpresa = new JLabel("CADASTRO DA EMPRESA");
+		tituloCadastroEmpresa.setFont(new Font("Tahoma", Font.BOLD, 15));
+		cadastroEmpresa.add(tituloCadastroEmpresa, "cell 0 0 2 1,alignx center");
+
+		labelNomeEmp = new JLabel("Raz\u00E3o Social: ");
+		cadastroEmpresa.add(labelNomeEmp, "cell 0 2,alignx left,aligny center");
+
+		nomeEmp = new JTextField();
+		cadastroEmpresa.add(nomeEmp, "cell 1 2,growx,aligny center");
+		nomeEmp.setColumns(20);
+
+		labelCnpjEmp = new JLabel("CNPJ:");
+		cadastroEmpresa.add(labelCnpjEmp, "cell 0 3,alignx left,aligny center");
+
+		cnpjEmp = new JTextField();
+		cadastroEmpresa.add(cnpjEmp, "cell 1 3,growx,aligny center");
+		cnpjEmp.setColumns(10);
+
+		labelRuaEmp = new JLabel("Rua:");
+		cadastroEmpresa.add(labelRuaEmp, "cell 0 4,alignx left,aligny center");
+
+		ruaEmp = new JTextField();
+		cadastroEmpresa.add(ruaEmp, "cell 1 4,growx,aligny center");
+		ruaEmp.setColumns(10);
+
+		labelNumeroEmp = new JLabel("N\u00FAmero:");
+		cadastroEmpresa.add(labelNumeroEmp, "cell 0 5,alignx left,aligny center");
+
+		numeroEmp = new JTextField();
+		cadastroEmpresa.add(numeroEmp, "cell 1 5,growx,aligny center");
+		numeroEmp.setColumns(10);
+
+		labelBairroEmp = new JLabel("Bairro:");
+		cadastroEmpresa.add(labelBairroEmp, "cell 0 6,alignx left,aligny center");
+
+		bairroEmp = new JTextField();
+		cadastroEmpresa.add(bairroEmp, "cell 1 6,growx,aligny center");
+		bairroEmp.setColumns(10);
+
+		labelCepEmp = new JLabel("Cep:");
+		cadastroEmpresa.add(labelCepEmp, "cell 0 7,alignx left,aligny center");
+
+		cepEmp = new JTextField();
+		cadastroEmpresa.add(cepEmp, "cell 1 7,growx,aligny center");
+		cepEmp.setColumns(10);
+
+		labelCidadeEmp = new JLabel("Cidade:");
+		cadastroEmpresa.add(labelCidadeEmp, "cell 0 8,alignx left,aligny center");
+
+		cidadeEmp = new JTextField();
+		cadastroEmpresa.add(cidadeEmp, "cell 1 8,growx,aligny center");
+		cidadeEmp.setColumns(10);
+
+		labelEstadoEmp = new JLabel("Estado:");
+		cadastroEmpresa.add(labelEstadoEmp, "cell 0 9,alignx left,aligny center");
+
+		estadoEmp = new JTextField();
+		cadastroEmpresa.add(estadoEmp, "cell 1 9,growx,aligny center");
+		estadoEmp.setColumns(10);
+
+		/**
+		 * Cadastro do cliente
+		 */
+
+		btnCadastrarEmp = new JButton("Cadastrar");
+		btnCadastrarEmp.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				/**
+				 * Cadastrar Empresa no sistema
+				 */
+				try {
+					Empresa empProcurar = aplicacao.getEmpresa(cnpjEmp.getText());
+					if (!(empProcurar == null)) {
+						JOptionPane.showMessageDialog(null, "Sua empresa já está cadastrada no nosso sistema!",
+								"Empresa já cadastrada no sistema", JOptionPane.WARNING_MESSAGE);
+					} else {
+						Endereco enderecoEmp = new Endereco(ruaEmp.getText(), Integer.parseInt(numeroEmp.getText()),
+								bairroEmp.getText(), cidadeEmp.getText(), estadoEmp.getText(), cepEmp.getText());
+						Empresa emp = new Empresa(nomeEmp.getText(), cnpjEmp.getText(), enderecoEmp);
+						aplicacao.addEmpresa(emp);
+
+						JOptionPane.showMessageDialog(null,
+								"Empresa cadastrada com sucesso !!! \nAgora é só cadastrar os seus clientes para utilizar"
+										+ "\no sistema de gestão de agendas\n"
+										+ aplicacao.getEmpresa(cnpjEmp.getText()).toString());
+
+						nomeEmp.setText(null);
+						cnpjEmp.setText(null);
+						ruaEmp.setText(null);
+						numeroEmp.setText(null);
+						bairroEmp.setText(null);
+						cepEmp.setText(null);
+						cidadeEmp.setText(null);
+						estadoEmp.setText(null);
+					}
+				} catch (NumberFormatException e1) {
+					JOptionPane.showMessageDialog(null, "Dados preenchidos com formato incorreto, tente novamente.",
+							"Erro preenchimento formulário", JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		});
+		btnCadastrarEmp.setForeground(new Color(0, 0, 128));
+		btnCadastrarEmp.setFont(new Font("Tahoma", Font.BOLD, 15));
+		cadastroEmpresa.add(btnCadastrarEmp, "cell 1 14,growx,aligny top");
 
 		JPanel cadastroCliente = new JPanel();
 		aba.addTab("Cadastro Cliente", null, cadastroCliente, null);
@@ -149,11 +288,8 @@ public class SistemaAgenda extends JFrame {
 		cadastroCliente.add(estadoCliente, "cell 1 12,growx,aligny center");
 		estadoCliente.setColumns(10);
 
-		/**
-		 * Cadastro do cliente
-		 */
-		JButton btnCadastrar = new JButton("Cadastrar");
-		btnCadastrar.addActionListener(new ActionListener() {
+		btnCadastrarCliente = new JButton("Cadastrar");
+		btnCadastrarCliente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				/**
 				 * Pegar empresa cadastrada no sistema
@@ -179,15 +315,15 @@ public class SistemaAgenda extends JFrame {
 					bairroCliente.setText(null);
 					cepCliente.setText(null);
 					cidadeCliente.setText(null);
-					estadoCliente.setText(null);				
-					
+					estadoCliente.setText(null);
 
 				}
 			}
 		});
-		btnCadastrar.setForeground(new Color(0, 0, 128));
-		btnCadastrar.setFont(new Font("Tahoma", Font.BOLD, 15));
-		cadastroCliente.add(btnCadastrar, "cell 1 15,growx,aligny top");
+		btnCadastrarCliente.setForeground(new Color(0, 0, 128));
+		btnCadastrarCliente.setFont(new Font("Tahoma", Font.BOLD, 15));
+		cadastroCliente.add(btnCadastrarCliente, "cell 1 15,growx,aligny top");
+
 	}
 
 }
