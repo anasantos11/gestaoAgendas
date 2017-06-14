@@ -1,5 +1,10 @@
 package pm_SalesForce;
 
+/**
+ * Classe com dados de um endereço 
+ *
+ */
+
 public class Endereco {
 	private String rua;
 	private int numero;

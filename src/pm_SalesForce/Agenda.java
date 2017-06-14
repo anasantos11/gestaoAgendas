@@ -1,3 +1,7 @@
+/**
+ * Classe com atendimentos de um ano, consegue retornar dados dos atendimentos 
+ * salvos para um determinado vendedor
+ */
 package pm_SalesForce;
 
 import java.util.ArrayList;
@@ -8,6 +12,10 @@ public class Agenda {
 	private Year ano;
 	private List<Dia> calendario; // = new ArrayList<Dia>();
 	
+	/**
+	 * Construtor da classe agenda 
+	 * @param ano
+	 */
 	Agenda(int a){
 		setAno(a);
 		if(!ano.isLeap()){
@@ -26,23 +34,40 @@ public class Agenda {
 		}
 		
 	}
-
+	/**
+	 * Pegar ano da agenda
+	 * @return
+	 */
 	public int getAno() {
 		return ano.getValue();
 	}
-
+	/**
+	 * Enviar ano da agenda
+	 * @param a
+	 */
 	public void setAno(int a) {
 		this.ano = Year.of(a);
 	}
-
+	/**
+	 * Pegar calendario
+	 * @return
+	 */
 	public List<Dia> getCalendario() {
 		return calendario;
 	}
-
+	
+	/**
+	 * Enviar calendario
+	 * @param calendario
+	 */
 	public void setCalendario(List<Dia> calendario) {
 		this.calendario = calendario;
 	}
-	
+	/**
+	 * Retornar dados do atendimento de um vendedor
+	 * @param v
+	 * @return
+	 */
 	public String atdVendedor(Vendedor v){
 		String atdAgendados = "";
 		for(Dia i : calendario){

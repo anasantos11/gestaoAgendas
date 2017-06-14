@@ -80,6 +80,8 @@ public class SistemaAgenda extends JFrame {
 	private JTextField nascimentoVendedor;
 	private JTextField cnpjClienteFicha;
 	private Label labelCliente;
+	private JTextField descricaoFicha;
+	private JLabel lblDescrioProduto;
 
 	/**
 	 * Launch the application.
@@ -534,17 +536,19 @@ public class SistemaAgenda extends JFrame {
 							String[] horario = horarioFicha.getText().split(":");
 							int hora = Integer.parseInt(horario[0]);
 							int minuto = Integer.parseInt(horario[1]);
-							Produto produto = new Produto("", (Categoria) produtoFicha.getSelectedItem());
+							Produto produto = new Produto(descricaoFicha.getText(), (Categoria) produtoFicha.getSelectedItem());
 							Atendimento atendimento = new Atendimento(LocalTime.of(hora, minuto), vendedorFicha,
 									clienteFicha, produto);
 							JOptionPane.showMessageDialog(null,
 									"Atendimento cadastrado com sucesso !!!\nEmpresa Responsável: "
-											+ empresaFicha.getNome() + " - " + empresaFicha.getCnpj() + atendimento.printAtendimento());
+											+ empresaFicha.getNome() + " - " + empresaFicha.getCnpj()
+											+ atendimento.printAtendimento());
 
 							cnpjEmpFicha.setText(null);
 							cpfVendedorFicha.setText(null);
 							cnpjClienteFicha.setText(null);
 							horarioFicha.setText(null);
+							descricaoFicha.setText(null);
 						}
 					}
 
@@ -578,6 +582,13 @@ public class SistemaAgenda extends JFrame {
 
 		JLabel labelProduto = new JLabel("Seguro:");
 		atendimento.add(labelProduto, "cell 0 9,alignx left,aligny center");
+
+		lblDescrioProduto = new JLabel("Descri\u00E7\u00E3o Produto: ");
+		atendimento.add(lblDescrioProduto, "cell 0 10 1 4,alignx left");
+
+		descricaoFicha = new JTextField();
+		atendimento.add(descricaoFicha, "cell 1 10 1 4,grow");
+		descricaoFicha.setColumns(10);
 
 		btnCadastrarAtendimento.setForeground(new Color(0, 0, 128));
 		btnCadastrarAtendimento.setFont(new Font("Tahoma", Font.BOLD, 15));
