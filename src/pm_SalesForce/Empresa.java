@@ -1,14 +1,15 @@
 package pm_SalesForce;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class Empresa {
 	private String nome;
 	private String cnpj;
 	private Endereco endereco;
-	private List<Vendedor> listaVendedores = new ArrayList<Vendedor>();
-	private List<Cliente> listaClientes = new ArrayList<Cliente>();
+	private List<Vendedor> listaVendedores;
+	private List<Cliente> listaClientes;
 	private Produto produto;
 	private Agenda agenda;
 
@@ -16,6 +17,40 @@ public class Empresa {
 		setNome(nome);
 		setCnpj(cnpj);
 		setEndereco(endereco);
+		listaClientes = new ArrayList<Cliente>();
+		listaVendedores = new ArrayList<Vendedor>();
+	}
+
+	public void cadastrarCliente(Cliente cliente) {
+		listaClientes.add(cliente);
+	}
+
+	public Cliente getCliente(String cnpj) {
+		Iterator<Cliente> iter = listaClientes.iterator();
+		while (iter.hasNext()) {
+			Cliente atual = iter.next();
+			if (atual.getCnpj().equals(cnpj)) {
+				return atual;
+			}
+		}
+
+		return null;
+	}
+
+	public void cadastrarVendedor(Vendedor vendedor) {
+		listaVendedores.add(vendedor);
+	}
+
+	public Vendedor getVendedor(String cpf) {
+		Iterator<Vendedor> iter = listaVendedores.iterator();
+		while (iter.hasNext()) {
+			Vendedor atual = iter.next();
+			if (atual.getCpf().equals(cpf)) {
+				return atual;
+			}
+		}
+
+		return null;
 	}
 
 	public String getNome() {
@@ -62,6 +97,5 @@ public class Empresa {
 	public String toString() {
 		return "Nome: " + nome + "\nCnpj: " + cnpj + "\nEndereço: " + endereco.toString();
 	}
-	
-	
+
 }
