@@ -64,7 +64,7 @@ public class Dia {
 	 * @param produto
 	 * @return boolean status (gerado ou nao o atendimento)
 	 */
-	public boolean criarAtendimento(int h, int m, Vendedor v, Cliente c, Produto p) {
+	public boolean criarAtendimento(LocalDate data, int h, int m, Vendedor v, Cliente c, Produto p) {
 		boolean atdExiste = false;
 		boolean status = false;
 		for (Atendimento i : getListaAtendimentos()) {
@@ -73,7 +73,7 @@ public class Dia {
 			}
 		}
 		if (!atdExiste) {
-			Atendimento atd = new Atendimento(LocalTime.of(h, m), v, c, p);
+			Atendimento atd = new Atendimento(LocalTime.of(h, m), data, v, c, p);
 			listaAtendimentos.add(atd);
 			status = true;
 		}
