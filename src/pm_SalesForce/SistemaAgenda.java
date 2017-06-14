@@ -13,9 +13,13 @@ import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.Color;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.awt.event.ActionEvent;
 import net.miginfocom.swing.MigLayout;
 import java.awt.Label;
+import javax.swing.JFormattedTextField;
 
 public class SistemaAgenda extends JFrame {
 
@@ -25,22 +29,31 @@ public class SistemaAgenda extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel tela;
 	private JTextField nomeCliente;
+	private JTextField nomeVendedor;
 	private JTextField nomeEmp;
 	private JTextField cnpjCliente;
 	private JTextField cnpjEmp;
+	private JTextField cpfVendedor;
 	private JTextField ruaCliente;
 	private JTextField ruaEmp;
+	private JTextField ruaVendedor;
 	private JTextField numeroCliente;
 	private JTextField numeroEmp;
+	private JTextField numeroVendedor;
 	private JTextField estadoCliente;
 	private JTextField estadoEmp;
+	private JTextField estadoVendedor;
 	private JTextField cidadeCliente;
 	private JTextField cidadeEmp;
+	private JTextField cidadeVendedor;
 	private JTextField bairroCliente;
 	private JTextField bairroEmp;
+	private JTextField bairroVendedor;
 	private JTextField cepCliente;
 	private JTextField cepEmp;
+	private JTextField cepVendedor;
 	private JTextField cnpjEmpresa;
+	private JTextField cnpjEmpVendedor;
 	private JPanel cadastroEmpresa;
 	private JLabel tituloCadastroEmpresa;
 	private JLabel labelEstadoEmp;
@@ -53,6 +66,9 @@ public class SistemaAgenda extends JFrame {
 	private JLabel labelNomeEmp;
 	private JButton btnCadastrarEmp;
 	private JButton btnCadastrarCliente;
+	private JButton btnCadastrarVendedor;
+	private JLabel labelNascimentoCliente;
+	private JTextField nascimentoVendedor;
 
 	/**
 	 * Launch the application.
@@ -76,7 +92,7 @@ public class SistemaAgenda extends JFrame {
 	public SistemaAgenda() {
 		Singleton log = Singleton.getInstance();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 348, 506);
+		setBounds(100, 100, 444, 506);
 		tela = new JPanel();
 		tela.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(tela);
@@ -84,15 +100,6 @@ public class SistemaAgenda extends JFrame {
 
 		JTabbedPane aba = new JTabbedPane(JTabbedPane.TOP);
 		tela.add(aba);
-
-		/**
-		 * Cadastro do cliente
-		 */
-
-		/**
-		 * teste
-		 * 
-		 */
 
 		cadastroEmpresa = new JPanel();
 		aba.addTab("Cadastro de Empresa", null, cadastroEmpresa, null);
@@ -160,9 +167,8 @@ public class SistemaAgenda extends JFrame {
 		estadoEmp.setColumns(10);
 
 		/**
-		 * Cadastro do cliente
+		 * Cadastro da Empresa no sistema
 		 */
-
 		btnCadastrarEmp = new JButton("Cadastrar");
 		btnCadastrarEmp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -204,6 +210,9 @@ public class SistemaAgenda extends JFrame {
 		btnCadastrarEmp.setFont(new Font("Tahoma", Font.BOLD, 15));
 		cadastroEmpresa.add(btnCadastrarEmp, "cell 1 14,growx,aligny top");
 
+		/**
+		 * Aba cadastro Cliente
+		 */
 		JPanel cadastroCliente = new JPanel();
 		aba.addTab("Cadastro Cliente", null, cadastroCliente, null);
 		cadastroCliente.setLayout(new MigLayout("", "[90px][198px,grow]",
@@ -281,6 +290,9 @@ public class SistemaAgenda extends JFrame {
 		cadastroCliente.add(estadoCliente, "cell 1 12,growx,aligny center");
 		estadoCliente.setColumns(10);
 
+		/**
+		 * Cadastro do cliente de uma empresa
+		 */
 		btnCadastrarCliente = new JButton("Cadastrar");
 		btnCadastrarCliente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -325,6 +337,146 @@ public class SistemaAgenda extends JFrame {
 		btnCadastrarCliente.setForeground(new Color(0, 0, 128));
 		btnCadastrarCliente.setFont(new Font("Tahoma", Font.BOLD, 15));
 		cadastroCliente.add(btnCadastrarCliente, "cell 1 15,growx,aligny top");
+
+		JPanel cadastroVendedor = new JPanel();
+		aba.addTab("Cadastro Vendedor", null, cadastroVendedor, null);
+		cadastroVendedor.setLayout(new MigLayout("", "[90px][198px,grow]",
+				"[19px][20px][20px][20px][20px][20px][20px][20px][20px][27px][][][][][][]"));
+
+		JLabel tituloVendedor = new JLabel("DADOS DA EMPRESA");
+		tituloVendedor.setFont(new Font("Tahoma", Font.BOLD, 15));
+		cadastroVendedor.add(tituloVendedor, "cell 0 0 2 1,alignx center");
+
+		Label digiteCNPJEmp = new Label("Digite seu CNPJ:");
+		digiteCNPJEmp.setFont(new Font("Tahoma", Font.BOLD, 13));
+		cadastroVendedor.add(digiteCNPJEmp, "cell 0 2");
+
+		cnpjEmpVendedor = new JTextField();
+		cadastroVendedor.add(cnpjEmpVendedor, "cell 1 2,growx");
+		cnpjEmpVendedor.setColumns(10);
+
+		JLabel tituloCadastroVendedor = new JLabel("CADASTRO DO VENDEDOR");
+		tituloCadastroVendedor.setFont(new Font("Tahoma", Font.BOLD, 15));
+		cadastroVendedor.add(tituloCadastroVendedor, "cell 0 4 2 1,alignx center,aligny top");
+
+		JLabel labelNomeVendedor = new JLabel("Nome Completo:");
+		cadastroVendedor.add(labelNomeVendedor, "cell 0 5,alignx left,aligny center");
+
+		nomeVendedor = new JTextField();
+		cadastroVendedor.add(nomeVendedor, "cell 1 5,growx,aligny center");
+		nomeVendedor.setColumns(20);
+
+		JLabel labelCpfVendedor = new JLabel("CPF:");
+		cadastroVendedor.add(labelCpfVendedor, "cell 0 6,alignx left,aligny center");
+
+		cpfVendedor = new JTextField();
+		cadastroVendedor.add(cpfVendedor, "cell 1 6,growx,aligny center");
+		cpfVendedor.setColumns(10);
+		btnCadastrarVendedor = new JButton("Cadastrar");
+		btnCadastrarVendedor.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				/**
+				 * Pegar empresa cadastrada no sistema
+				 */
+				try {
+					@SuppressWarnings("unused")
+					int teste = Integer.parseInt(numeroVendedor.getText());
+					Empresa empresaVendedor = log.getEmpresa(cnpjEmpVendedor.getText());
+					if (empresaVendedor == null) {
+						JOptionPane.showMessageDialog(null,
+								"Sua empresa não está cadastrada no sistema! \nVá até a aba 'Cadastro de Empresa' para usufruir das funcionalidades \noferecidas pelo nosso sistema.",
+								"Sem acesso ao sistema", JOptionPane.WARNING_MESSAGE);
+					} else {
+						Endereco enderecoVendedor = new Endereco(ruaVendedor.getText(),
+								Integer.parseInt(numeroVendedor.getText()), bairroVendedor.getText(),
+								cidadeVendedor.getText(), estadoVendedor.getText(), cepVendedor.getText());
+
+						//JOptionPane.showMessageDialog(null, "dATA: " + nascimentoVendedor.getText());
+						String[] data = nascimentoVendedor.getText().split("/");
+						int dia = Integer.parseInt(data[0]);
+						int mes = Integer.parseInt(data[1]);
+						int ano = Integer.parseInt(data[2]);
+						Vendedor vendedorEmpresa = new Vendedor(nomeVendedor.getText(), LocalDate.of(ano, mes, dia),
+								enderecoVendedor, cpfVendedor.getText(), empresaVendedor);
+						empresaVendedor.cadastrarVendedor(vendedorEmpresa);
+						JOptionPane.showMessageDialog(null, "Vendedor cadastrado com sucesso !!! \n\n"
+								+ empresaVendedor.getVendedor(cpfVendedor.getText()).toString());
+						cnpjEmpVendedor.setText(null);
+						nomeVendedor.setText(null);
+						cpfVendedor.setText(null);
+						ruaVendedor.setText(null);
+						numeroVendedor.setText(null);
+						bairroVendedor.setText(null);
+						cepVendedor.setText(null);
+						cidadeVendedor.setText(null);
+						estadoVendedor.setText(null);
+
+					}
+
+				} catch (NumberFormatException e2) {
+					JOptionPane.showMessageDialog(null,
+							"Dados preenchidos com formato incorreto, tente novamente. \n" + e2.getMessage(),
+							"Erro preenchimento formulário", JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		});
+
+		labelNascimentoCliente = new JLabel("Data de Nascimento:");
+		cadastroVendedor.add(labelNascimentoCliente, "cell 0 7,alignx left");
+		nascimentoVendedor = new JTextField();
+		cadastroVendedor.add(nascimentoVendedor, "cell 1 7,growx");
+
+		JLabel labelRuaVendedor = new JLabel("Rua:");
+		cadastroVendedor.add(labelRuaVendedor, "cell 0 8,alignx left,aligny center");
+
+		ruaVendedor = new JTextField();
+		cadastroVendedor.add(ruaVendedor, "cell 1 8,growx,aligny center");
+		ruaVendedor.setColumns(10);
+
+		JLabel labelNumeroVendedor = new JLabel("N\u00FAmero:");
+		cadastroVendedor.add(labelNumeroVendedor, "cell 0 9,alignx left,aligny center");
+
+		numeroVendedor = new JTextField();
+		cadastroVendedor.add(numeroVendedor, "cell 1 9,growx,aligny center");
+		numeroVendedor.setColumns(10);
+
+		JLabel labelBairroVendedor = new JLabel("Bairro:");
+		cadastroVendedor.add(labelBairroVendedor, "cell 0 10,alignx left,aligny center");
+
+		bairroVendedor = new JTextField();
+		cadastroVendedor.add(bairroVendedor, "cell 1 10,growx,aligny center");
+		bairroVendedor.setColumns(10);
+
+		JLabel labelCepVendedor = new JLabel("Cep:");
+		cadastroVendedor.add(labelCepVendedor, "cell 0 11,alignx left,aligny center");
+
+		cepVendedor = new JTextField();
+		cadastroVendedor.add(cepVendedor, "cell 1 11,growx,aligny center");
+		cepVendedor.setColumns(10);
+
+		JLabel labelCidadeVendedor = new JLabel("Cidade:");
+		cadastroVendedor.add(labelCidadeVendedor, "cell 0 12,alignx left,aligny center");
+
+		cidadeVendedor = new JTextField();
+		cadastroVendedor.add(cidadeVendedor, "cell 1 12,growx,aligny center");
+		cidadeVendedor.setColumns(10);
+
+		JLabel labelEstadoVendedor = new JLabel("Estado:");
+		cadastroVendedor.add(labelEstadoVendedor, "cell 0 13,alignx left,aligny center");
+
+		estadoVendedor = new JTextField();
+		cadastroVendedor.add(estadoVendedor, "cell 1 13,growx,aligny center");
+		estadoVendedor.setColumns(10);
+		btnCadastrarVendedor.setForeground(new Color(0, 0, 128));
+		btnCadastrarVendedor.setFont(new Font("Tahoma", Font.BOLD, 15));
+		cadastroVendedor.add(btnCadastrarVendedor, "cell 1 15,growx,aligny top");
+		/**
+		 * Aba Cadastro Vendedor
+		 */
+
+		/**
+		 * Cadastro do cliente de uma empresa
+		 */
 
 	}
 
