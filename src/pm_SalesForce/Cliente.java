@@ -1,5 +1,6 @@
 package pm_SalesForce;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Cliente extends Empresa{
@@ -10,6 +11,7 @@ public class Cliente extends Empresa{
 	public Cliente(String nome, String cnpj, Endereco endereco){
 		super(nome, cnpj, endereco);
 		id = ++cont;
+		setListaProdutos(new ArrayList<Produto>());
 	}
 
 	public int getId() {
@@ -24,9 +26,17 @@ public class Cliente extends Empresa{
 	public String toString() {
 		return "Id: " + id + "\n" + super.toString();
 	}
+
+	public List<Produto> getListaProdutos() {
+		return listaProdutos;
+	}
+
+	public void setListaProdutos(List<Produto> listaProdutos) {
+		this.listaProdutos = listaProdutos;
+	}
 	
-	
-	
-	
+	public void addProduto(Produto p){
+		getListaProdutos().add(p);
+	}
 	
 }
