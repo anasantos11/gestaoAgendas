@@ -1,5 +1,5 @@
 package pm_SalesForce;
 
 public enum Categoria {
-	Beta, Alpha, Gama
+	Habitacao, Rural, Automovel, Saude
 }
